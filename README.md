@@ -1,6 +1,8 @@
 # Color Catalog App
-
 ![Flutter Version](https://img.shields.io/badge/Flutter-3.x-blue) ![Hive Version](https://img.shields.io/badge/Hive-2.x-green)
+
+
+![AppIcon](https://github.com/GaneshManickam/Color-Catalog/blob/main/color_vault/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
 The **Color Catalog App** is a Flutter application designed to help users extract colors from images, manage a catalog of colors, and export their collections in various formats (CSV, PDF). This app leverages Hive for local storage, Palette Generator for color extraction, and Flutter's Material Design components for a seamless user experience.
 
