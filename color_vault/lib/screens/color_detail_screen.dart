@@ -62,7 +62,7 @@ class _ColorDetailScreenState extends State<ColorDetailScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Color Details')),
       backgroundColor: widget.color.withOpacity(
-        0.5,
+        0.6,
       ), // Set the background color to the selected color with 50% opacity
       body: Padding(
         padding: EdgeInsets.all(16.0),
