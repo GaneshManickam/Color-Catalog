@@ -71,27 +71,93 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _exportCatalogPDF() async {
     final pdf = pw.Document();
-    pdf.addPage(
-      pw.Page(
-        build:
-            (pw.Context context) => pw.Column(
-              children:
-                  _colorBox.values
-                      .map(
-                        (color) => pw.Container(
+    final colors = _colorBox.values.toList();
+    const int colorsPerPage = 30;
+    final int totalPages = (colors.length / colorsPerPage).ceil();
+    final year = DateTime.now().year;
+
+    for (int pageIndex = 0; pageIndex < totalPages; pageIndex++) {
+      final pageColors =
+          colors.skip(pageIndex * colorsPerPage).take(colorsPerPage).toList();
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (pw.Context context) {
+            return pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.stretch,
+              children: [
+                // Header
+                pw.Text(
+                  'Color Catalog',
+                  style: pw.TextStyle(
+                    fontSize: 20,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                  textAlign: pw.TextAlign.center,
+                ),
+                pw.SizedBox(height: 10),
+
+                // Color Grid (3 per row)
+                pw.Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children:
+                      pageColors.map((color) {
+                        final colorValue = color.value;
+                        final textColor = _getTextColorForBackground(
+                          colorValue,
+                        );
+
+                        return pw.Container(
+                          width: (PdfPageFormat.a4.availableWidth - 40) / 3,
                           height: 50,
-                          width: double.infinity,
-                          color: PdfColor.fromInt(color.value),
-                        ),
-                      )
-                      .toList(),
-            ),
-      ),
-    );
+                          decoration: pw.BoxDecoration(
+                            color: PdfColor.fromInt(colorValue),
+                            borderRadius: pw.BorderRadius.circular(8),
+                          ),
+                          child: pw.Center(
+                            child: pw.Text(
+                              '#${colorValue.toRadixString(16).padLeft(8, '0').toUpperCase()}',
+                              style: pw.TextStyle(
+                                color: textColor,
+                                fontWeight: pw.FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                ),
+
+                pw.Spacer(),
+
+                // Footer
+                pw.Text(
+                  'Color Catalog © $year | Page ${pageIndex + 1} of $totalPages',
+                  style: pw.TextStyle(fontSize: 12),
+                  textAlign: pw.TextAlign.center,
+                ),
+              ],
+            );
+          },
+        ),
+      );
+    }
+
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/color_catalog.pdf');
     await file.writeAsBytes(await pdf.save());
     Share.shareXFiles([XFile(file.path)], text: "Color Catalog PDF");
+  }
+
+  /// Function to determine text color based on background brightness
+  PdfColor _getTextColorForBackground(int colorValue) {
+    final r = (colorValue >> 16) & 0xFF;
+    final g = (colorValue >> 8) & 0xFF;
+    final b = colorValue & 0xFF;
+
+    final brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+    return brightness > 150 ? PdfColors.black : PdfColors.white;
   }
 
   Future<void> _openColorPicker() async {
