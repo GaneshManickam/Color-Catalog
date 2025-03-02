@@ -3,7 +3,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:csv/csv.dart';
 import 'package:pdf/pdf.dart';
-import 'package:hive/hive.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'dart:io';
 import 'package:share_plus/share_plus.dart';
@@ -11,8 +10,11 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'color_detail_screen.dart';
 import 'image_preview_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -103,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: selectedColor,
+              hexInputBar: true,
               onColorChanged: (Color color) {
                 selectedColor = color;
               },
@@ -173,8 +176,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = _colorBox.values.toList();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Color Catalog'),
@@ -195,60 +196,70 @@ class _HomeScreenState extends State<HomeScreen> {
             Text('Pick an image and extract colors to build your catalog.'),
             SizedBox(height: 24),
 
+            // ✅ Listen for changes and update UI
             Expanded(
-              child: GridView.builder(
-                padding: EdgeInsets.all(8.0),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
-                ),
-                itemCount: colors.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onLongPress: () => _deleteColor(index),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  ColorDetailScreen(color: colors[index]),
-                        ),
-                      );
-                    },
-                    child: Hero(
-                      tag: 'color_${colors[index].value}',
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
-                        decoration: BoxDecoration(
-                          color: colors[index],
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 4,
-                              offset: Offset(2, 4),
+              child: ValueListenableBuilder(
+                valueListenable: _colorBox.listenable(),
+                builder: (context, Box<Color> box, _) {
+                  final colors = box.values.toList();
+                  return GridView.builder(
+                    padding: EdgeInsets.all(8.0),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: colors.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onLongPress: () => _deleteColor(index),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) =>
+                                      ColorDetailScreen(color: colors[index]),
                             ),
-                          ],
-                        ),
-                        child: Center(
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              '#${colors[index].value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                shadows: [
-                                  Shadow(blurRadius: 2, color: Colors.black),
-                                ],
+                          );
+                        },
+                        child: Hero(
+                          tag: 'color_${colors[index].value}',
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            decoration: BoxDecoration(
+                              color: colors[index],
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(2, 4),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  '#${colors[index].value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    shadows: [
+                                      Shadow(
+                                        blurRadius: 2,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
                 },
               ),

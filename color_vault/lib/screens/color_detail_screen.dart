@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 class ColorDetailScreen extends StatefulWidget {
   final Color color;
 
-  ColorDetailScreen({required this.color});
+  const ColorDetailScreen({super.key, required this.color});
 
   @override
   _ColorDetailScreenState createState() => _ColorDetailScreenState();

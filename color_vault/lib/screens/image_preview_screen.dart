@@ -7,7 +7,11 @@ class ImagePreviewScreen extends StatefulWidget {
   final File imageFile;
   final Function(List<Color>) onColorsSelected;
 
-  ImagePreviewScreen({required this.imageFile, required this.onColorsSelected});
+  const ImagePreviewScreen({
+    super.key,
+    required this.imageFile,
+    required this.onColorsSelected,
+  });
 
   @override
   _ImagePreviewScreenState createState() => _ImagePreviewScreenState();

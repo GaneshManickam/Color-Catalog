@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'models/color_model.dart';
 import 'screens/home_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final appDocumentDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir.path);
+  await Hive.initFlutter(); // ✅ Replace with Hive.initFlutter()
   Hive.registerAdapter(ColorAdapter());
-  await Hive.openBox<Color>('colorsBox');
+  await Hive.openBox<Color>('colorsBox'); // ✅ Ensure this matches the box name
   runApp(ColorCatalogApp());
 }
 
 class ColorCatalogApp extends StatelessWidget {
+  const ColorCatalogApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
