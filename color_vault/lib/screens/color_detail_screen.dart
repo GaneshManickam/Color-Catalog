@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class ColorDetailScreen extends StatefulWidget {
   final Color color;
@@ -61,6 +62,9 @@ class _ColorDetailScreenState extends State<ColorDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Color Details')),
+      backgroundColor: widget.color.withOpacity(
+        0.5,
+      ), // Set the background color to the selected color with 50% opacity
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -68,7 +72,7 @@ class _ColorDetailScreenState extends State<ColorDetailScreen> {
           children: [
             Container(
               height: 120,
-              width: 120,
+              width: double.infinity,
               decoration: BoxDecoration(
                 color: widget.color,
                 borderRadius: BorderRadius.circular(16),
@@ -118,15 +122,33 @@ class _ColorDetailScreenState extends State<ColorDetailScreen> {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: ListTile(
-        title: Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(
-          value,
-          style: TextStyle(fontSize: 16, fontFamily: 'monospace'),
-        ),
-        trailing: IconButton(
-          icon: Icon(Icons.copy, color: Colors.blueAccent),
-          onPressed: () => copyToClipboard(context, value),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(value, style: TextStyle(fontFamily: 'monospace')),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: Icon(
+                  Icons.copy,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () => copyToClipboard(context, value),
+              ),
+            ),
+          ],
         ),
       ),
     );

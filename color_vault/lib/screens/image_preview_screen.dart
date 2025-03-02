@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart'; // Import for useWhiteForeground
 
 class ImagePreviewScreen extends StatefulWidget {
   final File imageFile;
@@ -78,6 +79,32 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
             Column(
               children: [
                 Expanded(flex: 1, child: Image.file(widget.imageFile)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    spacing: 8.0,
+                    children:
+                        _selectedColors.map((color) {
+                          return Chip(
+                            backgroundColor: color,
+                            label: Text(
+                              '#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
+                              style: TextStyle(
+                                color:
+                                    useWhiteForeground(color)
+                                        ? Colors.white
+                                        : Colors.black,
+                              ),
+                            ),
+                            onDeleted: () {
+                              setState(() {
+                                _selectedColors.remove(color);
+                              });
+                            },
+                          );
+                        }).toList(),
+                  ),
+                ),
                 Expanded(
                   flex: 1,
                   child: GridView.builder(
@@ -109,7 +136,11 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                             borderRadius: BorderRadius.circular(12),
                             border:
                                 isSelected
-                                    ? Border.all(color: Colors.white, width: 3)
+                                    ? Border.all(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      width: 3,
+                                    )
                                     : null,
                             boxShadow: [
                               BoxShadow(
@@ -123,7 +154,10 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                               isSelected
                                   ? Icon(
                                     Icons.check,
-                                    color: Colors.white,
+                                    color:
+                                        useWhiteForeground(color)
+                                            ? Colors.white
+                                            : Colors.black,
                                     size: 30,
                                   )
                                   : null,
