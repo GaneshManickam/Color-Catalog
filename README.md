@@ -1,10 +1,10 @@
-# Color Catalog App
+# Color Vault App
 ![Flutter Version](https://img.shields.io/badge/Flutter-3.x-blue) ![Hive Version](https://img.shields.io/badge/Hive-2.x-green)
 
 
-![AppIcon](https://github.com/GaneshManickam/Color-Catalog/blob/main/color_vault/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+![AppIcon](https://github.com/GaneshManickam/Color-Vault/blob/main/color_vault/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
 
-The **Color Catalog App** is a Flutter application designed to help users extract colors from images, manage a catalog of colors, and export their collections in various formats (CSV, PDF). This app leverages Hive for local storage, Palette Generator for color extraction, and Flutter's Material Design components for a seamless user experience.
+The **Color Vault App** is a Flutter application designed to help users extract colors from images, manage a Vault of colors, and export their collections in various formats (CSV, PDF). This app leverages Hive for local storage, Palette Generator for color extraction, and Flutter's Material Design components for a seamless user experience.
 
 ---
 
@@ -24,7 +24,7 @@ The **Color Catalog App** is a Flutter application designed to help users extrac
 - **Image Color Extraction**: Extract dominant colors from images using the device's camera or gallery.
 - **Color Management**: Add, delete, and save colors to a local database using Hive.
 - **Export Options**:
-  - Export your color catalog as a CSV file.
+  - Export your color Vault as a CSV file.
   - Generate a PDF document with color swatches.
 - **Color Details**: View detailed information about each color, including Hex, RGB, CSS, Swift, SwiftUI, Objective-C, and Kotlin code snippets.
 - **Clipboard Integration**: Copy color codes to the clipboard with a single tap.
@@ -45,7 +45,7 @@ The **Color Catalog App** is a Flutter application designed to help users extrac
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/GaneshManickam/Color-Catalog.git
+   git clone https://github.com/GaneshManickam/Color-Vault.git
    cd color-vault
    ```
 
@@ -74,17 +74,17 @@ The **Color Catalog App** is a Flutter application designed to help users extrac
 - **View Color Details**:
   - Tap on any color tile to view its details, including Hex, RGB, and code snippets for various platforms.
 
-- **Export Catalog**:
-  - Tap the share icon in the app bar to export your color catalog as a CSV or PDF file.
+- **Export Vault**:
+  - Tap the share icon in the app bar to export your color Vault as a CSV or PDF file.
 
 ### Image Preview Screen
 
-- After selecting or capturing an image, you can choose which extracted colors to save to your catalog.
+- After selecting or capturing an image, you can choose which extracted colors to save to your Vault.
 
 ### Color Detail Screen
 
 - Displays detailed information about a selected color.
-- Provides options to copy color codes to the clipboard or add/delete the color from the catalog.
+- Provides options to copy color codes to the clipboard or add/delete the color from the Vault.
 
 ---
 
@@ -97,7 +97,7 @@ This project relies on the following key packages:
 - **Palette Generator**: Extracts dominant colors from images.
 - **Path Provider**: Provides access to the device's file system.
 - **CSV**: Converts data into CSV format for exporting.
-- **PDF**: Generates PDF documents for exporting color catalogs.
+- **PDF**: Generates PDF documents for exporting color Vaults.
 - **Share Plus**: Enables sharing files via native share dialogs.
 - **Flutter Color Picker**: Provides a customizable color picker dialog.
 - **Expandable FAB**: Implements an expandable floating action button.
