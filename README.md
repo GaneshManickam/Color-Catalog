@@ -43,8 +43,8 @@ The **Color Catalog App** is a Flutter application designed to help users extrac
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/color-catalog-app.git
-   cd color-catalog-app
+   git clone https://github.com/GaneshManickam/Color-Catalog.git
+   cd color-vault
    ```
 
 2. **Install Dependencies**:
